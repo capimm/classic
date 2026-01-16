@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Fedora | Crew Blox Fruits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --black: #000000;
+            --dark-gray: #111111;
+            --gray: #222222;
+            --medium-gray: #333333;
+            --light-gray: #444444;
+            --lighter-gray: #555555;
+            --white: #ffffff;
+            --off-white: #f0f0f0;
+            --text-gray: #aaaaaa;
+            --fedora-brown: #8B4513;
+            --fedora-light: #D2691E;
+            --fedora-accent: #F4A460;
+            --skill-green: #228B22;
+            --pvp-red: #DC143C;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--off-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 69, 19, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(34, 139, 34, 0.05) 0%, transparent 20%);
+        }
+
+        /* Hotbar Flutuante */
+        .hotbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 900px;
+            background: rgba(17, 17, 17, 0.85);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            border-radius: 50px;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { top: -100px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
+        }
+
+        .hotbar:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            transform: translateX(-50%) translateY(-2px);
+            border-color: rgba(139, 69, 19, 0.5);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--white);
+            letter-spacing: -0.5px;
+            animation: fadeInLeft 0.8s ease-out;
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, var(--fedora-light), var(--fedora-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            animation: fadeInRight 0.8s ease-out;
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .nav-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--white);
+            background: rgba(139, 69, 19, 0.2);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--fedora-accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 60%;
+        }
+
+        .support-link {
+            margin-left: 15px;
+            background: rgba(34, 139, 34, 0.1);
+            border: 1px solid rgba(34, 139, 34, 0.3);
+            color: #90EE90;
+        }
+
+        .support-link:hover {
+            background: rgba(34, 139, 34, 0.2);
+            border-color: rgba(34, 139, 34, 0.5);
+        }
+
+        /* Conteúdo Principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 60px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Títulos */
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(244, 164, 96, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(244, 164, 96, 0.6), 0 0 30px rgba(244, 164, 96, 0.3); }
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--fedora-accent), transparent);
+            border-radius: 2px;
+            animation: lineWidth 2s ease-in-out infinite;
+        }
+
+        @keyframes lineWidth {
+            0%, 100% { width: 100px; }
+            50% { width: 150px; }
+        }
+
+        /* Cards com Design de Bolha */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(34, 34, 34, 0.9);
+            border-radius: 25px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            animation: cardFloat 6s ease-in-out infinite;
+            animation-delay: calc(var(--card-index) * 0.2s);
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(139, 69, 19, 0.3);
+            border-color: rgba(139, 69, 19, 0.4);
+            animation: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            background: rgba(139, 69, 19, 0.2);
+            color: var(--fedora-accent);
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Página Início */
+        .hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 80px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            background: rgba(139, 69, 19, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--fedora-accent);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(139, 69, 19, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            animation: float 6s ease-in-out infinite, circleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes circleGlow {
+            0%, 100% { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(139, 69, 19, 0.3), 0 0 20px rgba(139, 69, 19, 0.2); }
+            50% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(139, 69, 19, 0.4), 0 0 30px rgba(139, 69, 19, 0.4); }
+        }
+
+        .profile-circle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(139, 69, 19, 0.2) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Sistema de Votação */
+        .voting-section {
+            background: rgba(34, 34, 34, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            animation: sectionSlide 0.8s ease-out;
+        }
+
+        @keyframes sectionSlide {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .voting-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        .voting-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .vote-option {
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: optionFloat 8s ease-in-out infinite;
+            animation-delay: calc(var(--option-index) * 0.3s);
+        }
+
+        @keyframes optionFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .vote-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(139, 69, 19, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .vote-option:hover {
+            border-color: rgba(139, 69, 19, 0.4);
+            transform: translateY(-5px) scale(1.05);
+            animation: none;
+        }
+
+        .vote-option:hover::before {
+            opacity: 1;
+        }
+
+        .vote-option.selected {
+            border-color: var(--fedora-accent);
+            background: rgba(139, 69, 19, 0.2);
+            animation: selectedPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes selectedPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(244, 164, 96, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(244, 164, 96, 0.6); }
+        }
+
+        .vote-option h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--fedora-accent);
+            position: relative;
+            z-index: 1;
+        }
+
+        .vote-option p {
+            color: var(--text-gray);
+            position: relative;
+            z-index: 1;
+        }
+
+        .vote-count {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--fedora-accent);
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+            animation: countPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes countPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .vote-button {
+            display: block;
+            margin: 30px auto 0;
+            background: rgba(139, 69, 19, 0.2);
+            color: var(--fedora-accent);
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: buttonShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes buttonShimmer {
+            0%, 100% { background: rgba(139, 69, 19, 0.2); }
+            50% { background: rgba(139, 69, 19, 0.3); }
+        }
+
+        .vote-button:hover {
+            transform: scale(1.05);
+            background: rgba(139, 69, 19, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: rgba(139, 69, 19, 0.6);
+            animation: none;
+        }
+
+        .vote-button:disabled {
+            background: rgba(85, 85, 85, 0.2);
+            color: var(--lighter-gray);
+            cursor: not-allowed;
+            transform: none;
+            border-color: rgba(255, 255, 255, 0.05);
+            animation: none;
+        }
+
+        .voting-results {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-bar {
+            margin: 15px 0;
+            animation: barSlideIn 0.8s ease-out;
+            animation-delay: calc(var(--bar-index) * 0.1s);
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes barSlideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .result-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .bar-container {
+            height: 25px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--fedora-brown), var(--fedora-accent));
+            width: 0;
+            transition: width 1.5s ease-out;
+            border-radius: 5px;
+            animation: barWave 2s ease-in-out infinite;
+        }
+
+        @keyframes barWave {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Elementos de Lista */
+        .requirements-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .requirements-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-gray);
+            animation: listItemSlide 0.5s ease-out;
+            animation-delay: calc(var(--list-index) * 0.1s);
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes listItemSlide {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .requirements-list i {
+            color: var(--fedora-accent);
+            width: 20px;
+        }
+
+        /* Discord Section */
+        .discord-section {
+            text-align: center;
+            padding: 40px;
+            background: rgba(34, 34, 34, 0.9);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(88, 101, 242, 0.2);
+            animation: sectionSlide 0.8s ease-out;
+        }
+
+        .discord-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(88, 101, 242, 0.1);
+            color: var(--white);
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-top: 20px;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            animation: discordPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes discordPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 5px 15px rgba(88, 101, 242, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(88, 101, 242, 0.5); }
+        }
+
+        .discord-link:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            background: rgba(88, 101, 242, 0.2);
+            border-color: rgba(88, 101, 242, 0.5);
+            animation: none;
+        }
+
+        /* Botões */
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            animation: btnFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes btnFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .btn-primary {
+            background: rgba(139, 69, 19, 0.2);
+            color: var(--fedora-accent);
+            border: 1px solid rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: rgba(139, 69, 19, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(139, 69, 19, 0.6);
+            animation: none;
+        }
+
+        /* Elementos decorativos */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.3), transparent);
+            margin: 40px 0;
+            animation: dividerWidth 3s ease-in-out infinite;
+        }
+
+        @keyframes dividerWidth {
+            0%, 100% { background-size: 100% 1px; }
+            50% { background-size: 150% 1px; }
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-right: 8px;
+            margin-bottom: 8px;
+            animation: tagFloat 6s ease-in-out infinite;
+            animation-delay: calc(var(--tag-index) * 0.1s);
+        }
+
+        @keyframes tagFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* Tags temáticas */
+        .skill-tag {
+            background: rgba(34, 139, 34, 0.1);
+            border-color: rgba(34, 139, 34, 0.3);
+            color: #90EE90;
+        }
+
+        .pvp-tag {
+            background: rgba(220, 20, 60, 0.1);
+            border-color: rgba(220, 20, 60, 0.3);
+            color: #FF7F7F;
+        }
+
+        .classic-tag {
+            background: rgba(139, 69, 19, 0.1);
+            border-color: rgba(139, 69, 19, 0.3);
+            color: var(--fedora-accent);
+        }
+
+        /* Estilo para os primos */
+        .cousins-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cousin-card {
+            background: rgba(34, 34, 34, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            transition: var(--transition);
+            animation: cousinFloat 7s ease-in-out infinite;
+        }
+
+        @keyframes cousinFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .cousin-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: rgba(139, 69, 19, 0.4);
+            animation: none;
+        }
+
+        .cousin-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(139, 69, 19, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            color: var(--fedora-accent);
+            border: 2px solid rgba(139, 69, 19, 0.3);
+            animation: iconRotate 10s linear infinite;
+        }
+
+        @keyframes iconRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fedora Hat Icon Animation */
+        @keyframes fedoraSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fedora-spin {
+            animation: fedoraSpin 20s linear infinite;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hotbar {
+                width: 95%;
+                padding: 12px 20px;
+                border-radius: 30px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .nav-link {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .voting-options {
+                grid-template-columns: 1fr;
+            }
+
+            .voting-section {
+                padding: 25px;
+            }
+
+            .cousins-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Efeitos de Partículas */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            background: rgba(139, 69, 19, 0.03);
+            animation: particleFloat 20s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hotbar Flutuante -->
+    <nav class="hotbar">
+        <div class="logo"><span>CLASSIC FEDORA</span></div>
+        <div class="nav-links">
+            <a href="#" class="nav-link active" data-page="inicio">
+                <i class="fas fa-hat-cowboy"></i> Início
+            </a>
+            <a href="#" class="nav-link" data-page="crew">
+                <i class="fas fa-users"></i> A Crew
+            </a>
+            <a href="#" class="nav-link" data-page="votacao">
+                <i class="fas fa-vote-yea"></i> Votação
+            </a>
+            <a href="#" class="nav-link" data-page="filosofia">
+                <i class="fas fa-book"></i> Filosofia
+            </a>
+            <a href="#" class="nav-link" data-page="contato">
+                <i class="fas fa-envelope"></i> Contato
+            </a>
+            <a href="support.html" class="nav-link support-link">
+                <i class="fas fa-question-circle"></i> Suporte
+            </a>
+        </div>
+    </nav>
+
+    <!-- Container Principal -->
+    <div class="container">
+        <!-- Página Início -->
+        <section id="inicio" class="page active">
+            <div class="hero">
+                <div class="profile-circle">
+                    <i class="fas fa-hat-cowboy fedora-spin"></i>
+                </div>
+                <h1>Classic Fedora</h1>
+                <p>Uma crew governada por dois primos, focada em PvP antigo e skill pura. Valorizamos técnica sobre meta, habilidade sobre estatísticas, e tradição sobre modismos passageiros.</p>
+                <div style="margin-top: 40px;">
+                    <button class="btn btn-primary" onclick="switchPage('crew')">
+                        Conheça a Crew <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2 class="page-title">Pilares da Fedora</h2>
+            <div class="cards-grid">
+                <div class="card" onclick="switchPage('filosofia')" style="--card-index: 0;">
+                    <div class="card-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>PvP Antigo</h3>
+                    <p>Mantemos viva a arte do PvP clássico do Blox Fruits, com combos tradicionais, estratégias testadas pelo tempo e respeito pelos métodos originais.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag classic-tag" style="--tag-index: 0;">Combos Clássicos</span>
+                        <span class="tag pvp-tag" style="--tag-index: 1;">PvP Tradicional</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="switchPage('filosofia')" style="--card-index: 1;">
+                    <div class="card-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Skill Pura</h3>
+                    <p>Acreditamos que a verdadeira habilidade vem da prática, não de estatísticas ou frutas meta. Valorizamos jogadores que dominam a mecânica do jogo.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag skill-tag" style="--tag-index: 2;">Habilidade</span>
+                        <span class="tag" style="--tag-index: 3;">Mecânica Pura</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="switchPage('crew')" style="--card-index: 2;">
+                    <div class="card-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Governo Familiar</h3>
+                    <p>Governada por dois primos, a Classic Fedora mantém um ambiente familiar onde cada membro é valorizado e o respeito mútuo é a base de tudo.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag classic-tag" style="--tag-index: 4;">Família</span>
+                        <span class="tag" style="--tag-index: 5;">Respeito</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página A Crew -->
+        <section id="crew" class="page">
+            <h2 class="page-title">A Classic Fedora</h2>
+            
+            <div class="card" style="margin-bottom: 40px;">
+                <h3 style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-hat-cowboy" style="color: var(--fedora-accent);"></i>
+                    Nossa História
+                </h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-gray); margin-top: 15px;">
+                    A Classic Fedora nasceu da paixão de dois primos pelo PvP antigo do Blox Fruits. Cansados da mentalidade "meta" que dominava o jogo, 
+                    decidiram criar uma crew onde a habilidade pura, os combos clássicos e o respeito pela tradição fossem valorizados acima de tudo.
+                    Começamos como um pequeno grupo de jogadores veteranos e hoje somos uma crew respeitada por nossa filosofia única e pela qualidade de nossos membros.
+                </p>
+            </div>
+
+            <h3 style="text-align: center; margin: 40px 0 30px; color: var(--fedora-accent);">Os Fundadores</h3>
+            
+            <div class="cousins-container">
+                <div class="cousin-card">
+                    <div class="cousin-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 style="color: var(--fedora-accent);">Líder Marcus</h3>
+                    <p style="color: var(--text-gray); margin: 10px 0;">O primo mais velho, especialista em PvP antigo e estratégias clássicas. Mestre dos combos tradicionais.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag pvp-tag">PvP Clássico</span>
+                        <span class="tag">Estratégia</span>
+                    </div>
+                    <p style="color: var(--lighter-gray); margin-top: 15px; font-size: 0.9rem;">
+                        <i class="fas fa-quote-left"></i> "Skill não se compra, se conquista com prática."
+                    </p>
+                </div>
+
+                <div class="cousin-card">
+                    <div class="cousin-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 style="color: var(--fedora-accent);">Co-líder Lucas</h3>
+                    <p style="color: var(--text-gray); margin: 10px 0;">O primo mais novo, focado em técnica pura e desenvolvimento de habilidade. Especialista em mecânicas.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag skill-tag">Técnica</span>
+                        <span class="tag">Mecânica</span>
+                    </div>
+                    <p style="color: var(--lighter-gray); margin-top: 15px; font-size: 0.9rem;">
+                        <i class="fas fa-quote-left"></i> "O verdadeiro meta é a sua habilidade."
+                    </p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="cards-grid">
+                <div class="card" style="--card-index: 0;">
+                    <div class="card-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Conquistas</h3>
+                    <ul class="requirements-list">
+                        <li style="--list-index: 0;"><i class="fas fa-check"></i> Campeões do Torneio "Old School PvP" 2023</li>
+                        <li style="--list-index: 1;"><i class="fas fa-check"></i> 95% de vitórias em duelos 1v1</li>
+                        <li style="--list-index: 2;"><i class="fas fa-check"></i> +5 Membros no Hall da Fama do PvP</li>
+                        <li style="--list-index: 3;"><i class="fas fa-check"></i> Reconhecidos como "Mestres do Combo Clássico"</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="--card-index: 1;">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Eventos Regulares</h3>
+                    <ul class="requirements-list">
+                        <li style="--list-index: 0;"><i class="fas fa-fist-raised"></i> Sextas-feiras: Torneio de PvP Clássico</li>
+                        <li style="--list-index: 1;"><i class="fas fa-graduation-cap"></i> Sábados: Workshops de Combos Antigos</li>
+                        <li style="--list-index: 2;"><i class="fas fa-users"></i> Domingos: Duelos Amistosos 1v1</li>
+                        <li style="--list-index: 3;"><i class="fas fa-history"></i> Mensal: Campeonato "Old Meta Only"</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Votação -->
+        <section id="votacao" class="page">
+            <h2 class="page-title">Sistema de Votação</h2>
+            
+            <div class="voting-section">
+                <p class="voting-description">Na Classic Fedora, todas as decisões importantes são tomadas democraticamente. Vote nas próximas atividades da crew! A votação é restrita a membros ativos.</p>
+                
+                <div class="voting-options">
+                    <div class="vote-option" data-option="1" style="--option-index: 0;">
+                        <h4><i class="fas fa-fist-raised"></i> Torneio de PvP Clássico</h4>
+                        <p>Competição usando apenas frutas e estilos antigos, sem meta atual permitida. Foco em skill pura.</p>
+                        <div class="vote-count" id="count-1">84 votos</div>
+                    </div>
+                    
+                    <div class="vote-option" data-option="2" style="--option-index: 1;">
+                        <h4><i class="fas fa-graduation-cap"></i> Workshop de Combos Antigos</h4>
+                        <p>Sessão de ensino dos combos clássicos que fizeram história no Blox Fruits.</p>
+                        <div class="vote-count" id="count-2">67 votos</div>
+                    </div>
+                    
+                    <div class="vote-option" data-option="3" style="--option-index: 2;">
+                        <h4><i class="fas fa-users"></i> Desafio 2v2 Retro</h4>
+                        <p>Batalhas em duplas usando apenas builds e estratégias do Blox Fruits antigo.</p>
+                        <div class="vote-count" id="count-3">92 votos</div>
+                    </div>
+                    
+                    <div class="vote-option" data-option="4" style="--option-index: 3;">
+                        <h4><i class="fas fa-history"></i> Maratona de Bosses Antigos</h4>
+                        <p>Enfrentar todos os bosses clássicos em sequência, sem frutas meta.</p>
+                        <div class="vote-count" id="count-4">58 votos</div>
+                    </div>
+                </div>
+                
+                <button id="submit-vote" class="vote-button" disabled>VOTAR AGORA</button>
+                
+                <div class="voting-results">
+                    <h3 style="text-align: center; margin-bottom: 25px; color: var(--fedora-accent);">RESULTADOS PARCIAIS</h3>
+                    
+                    <div class="result-bar" style="--bar-index: 0;">
+                        <div class="result-label">
+                            <span>Torneio PvP Clássico</span>
+                            <span id="percent-1">28%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-1" style="width: 28%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-bar" style="--bar-index: 1;">
+                        <div class="result-label">
+                            <span>Workshop de Combos</span>
+                            <span id="percent-2">22%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-2" style="width: 22%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-bar" style="--bar-index: 2;">
+                        <div class="result-label">
+                            <span>Desafio 2v2 Retro</span>
+                            <span id="percent-3">31%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-3" style="width: 31%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-bar" style="--bar-index: 3;">
+                        <div class="result-label">
+                            <span>Maratona de Bosses</span>
+                            <span id="percent-4">19%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-4" style="width: 19%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Filosofia -->
+        <section id="filosofia" class="page">
+            <h2 class="page-title">Filosofia da Fedora</h2>
+            
+            <div class="cards-grid">
+                <div class="card" style="--card-index: 0;">
+                    <div class="card-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3>Anti-Meta</h3>
+                    <p>Rejeitamos a mentalidade de seguir cegamente o meta atual. Valorizamos jogadores que dominam o básico e criam suas próprias estratégias.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag classic-tag" style="--tag-index: 0;">Criatividade</span>
+                        <span class="tag" style="--tag-index: 1;">Originalidade</span>
+                    </div>
+                </div>
+
+                <div class="card" style="--card-index: 1;">
+                    <div class="card-icon">
+                        <i class="fas fa-hands"></i>
+                    </div>
+                    <h3>Skill sobre Estatísticas</h3>
+                    <p>Acreditamos que um jogador habilidoso com uma build mediana supera um jogador mediano com a build mais forte do meta.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag skill-tag" style="--tag-index: 2;">Habilidade</span>
+                        <span class="tag" style="--tag-index: 3;">Prática</span>
+                    </div>
+                </div>
+
+                <div class="card" style="--card-index: 2;">
+                    <div class="card-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Respeito pela Tradição</h3>
+                    <p>Honramos os métodos, combos e estratégias que fizeram a história do PvP no Blox Fruits. O clássico nunca morre.</p>
+                    <div style="margin-top: 15px;">
+                        <span class="tag classic-tag" style="--tag-index: 4;">Tradição</span>
+                        <span class="tag" style="--tag-index: 5;">História</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="card" style="margin-top: 30px;">
+                <h3 style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-scroll" style="color: var(--fedora-accent);"></i>
+                    O Código da Fedora
+                </h3>
+                <ul class="requirements-list" style="margin-top: 20px;">
+                    <li style="--list-index: 0;"><i class="fas fa-hat-cowboy"></i> Valorizamos habilidade sobre estatísticas</li>
+                    <li style="--list-index: 1;"><i class="fas fa-hat-cowboy"></i> Respeitamos todos os estilos de jogo legítimos</li>
+                    <li style="--list-index: 2;"><i class="fas fa-hat-cowboy"></i> Rejeitamos toxicidade e atitudes anti-desportivas</li>
+                    <li style="--list-index: 3;"><i class="fas fa-hat-cowboy"></i> Compartilhamos conhecimento, não arrogância</li>
+                    <li style="--list-index: 4;"><i class="fas fa-hat-cowboy"></i> Preservamos as técnicas clássicas do PvP</li>
+                    <li style="--list-index: 5;"><i class="fas fa-hat-cowboy"></i> Acreditamos que a prática leva à maestria</li>
+                </ul>
+                <p style="color: var(--fedora-accent); font-style: italic; margin-top: 20px; padding-left: 10px; border-left: 3px solid var(--fedora-accent);">
+                    "Na Classic Fedora, não seguimos o meta - nós criamos nossa própria tradição."
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h3 style="text-align: center; margin: 40px 0 30px; color: var(--fedora-accent);">Requisitos para Entrar</h3>
+            
+            <div class="cards-grid">
+                <div class="card" style="--card-index: 0;">
+                    <div class="card-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Habilidade</h3>
+                    <ul class="requirements-list">
+                        <li style="--list-index: 0;"><i class="fas fa-check-circle"></i> Domínio de combos clássicos</li>
+                        <li style="--list-index: 1;"><i class="fas fa-check-circle"></i> Conhecimento de mecânicas antigas</li>
+                        <li style="--list-index: 2;"><i class="fas fa-check-circle"></i> Capacidade de se adaptar</li>
+                        <li style="--list-index: 3;"><i class="fas fa-check-circle"></i> Mentalidade de aprendizado constante</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="--card-index: 1;">
+                    <div class="card-icon">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <h3>Atitude</h3>
+                    <ul class="requirements-list">
+                        <li style="--list-index: 0;"><i class="fas fa-check-circle"></i> Respeito por todos os jogadores</li>
+                        <li style="--list-index: 1;"><i class="fas fa-check-circle"></i> Mentalidade esportiva</li>
+                        <li style="--list-index: 2;"><i class="fas fa-check-circle"></i> Vontade de compartilhar conhecimento</li>
+                        <li style="--list-index: 3;"><i class="fas fa-check-circle"></i> Compromisso com a filosofia da crew</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="--card-index: 2;">
+                    <div class="card-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Compromisso</h3>
+                    <ul class="requirements-list">
+                        <li style="--list-index: 0;"><i class="fas fa-check-circle"></i> Participar dos eventos regulares</li>
+                        <li style="--list-index: 1;"><i class="fas fa-check-circle"></i> Manter-se ativo na comunidade</li>
+                        <li style="--list-index: 2;"><i class="fas fa-check-circle"></i> Respeitar as decisões democráticas</li>
+                        <li style="--list-index: 3;"><i class="fas fa-check-circle"></i> Representar a crew com honra</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Contato -->
+        <section id="contato" class="page">
+            <h2 class="page-title">Entre em Contato</h2>
+            
+            <div class="cards-grid">
+                <div class="card" style="--card-index: 0;">
+                    <div class="card-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <h3>Discord Oficial</h3>
+                    <p>Para entrar na crew ou saber mais informações, entre no nosso servidor do Discord. Todas as aplicações são feitas por lá.</p>
+                    
+                    <a href="https://discord.gg/J6uY4a7HEK" id="discord-link" class="discord-link" target="_blank" style="display: block; margin-top: 20px;">
+                        <i class="fab fa-discord"></i>
+                        https://discord.gg/J6uY4a7HEK
+                    </a>
+                    
+                    <p style="margin-top: 15px; color: var(--text-gray); font-size: 0.9rem;">
+                        No Discord você encontrará: canais de PvP, workshops, eventos e toda a comunidade da Classic Fedora.
+                    </p>
+                </div>
+
+                <div class="card" style="--card-index: 1;">
+                    <div class="card-icon">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h3>Processo de Entrada</h3>
+                    <p>Interessado em se juntar à Classic Fedora? Siga estes passos:</p>
+                    <ul class="requirements-list" style="margin-top: 15px;">
+                        <li style="--list-index: 0;"><i class="fas fa-arrow-right"></i> Entre no nosso Discord</li>
+                        <li style="--list-index: 1;"><i class="fas fa-arrow-right"></i> Leia as regras e a filosofia</li>
+                        <li style="--list-index: 2;"><i class="fas fa-arrow-right"></i> Preencha o formulário de aplicação</li>
+                        <li style="--list-index: 3;"><i class="fas fa-arrow-right"></i> Participe de uma entrevista com os líderes</li>
+                        <li style="--list-index: 4;"><i class="fas fa-arrow-right"></i> Faça o teste de PvP clássico</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="--card-index: 2;">
+                    <div class="card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Comunidade</h3>
+                    <p>Junte-se à nossa comunidade e compartilhe a paixão pelo PvP clássico.</p>
+                    <div style="margin-top: 20px;">
+                        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 20px; margin-bottom: 15px; animation: cardFloat 7s ease-in-out infinite;">
+                            <div style="font-weight: 600; color: var(--white); margin-bottom: 5px;">Eventos Semanais</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem;">Torneios, workshops e duelos toda semana</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 20px; animation: cardFloat 7s ease-in-out infinite; animation-delay: 0.5s;">
+                            <div style="font-weight: 600; color: var(--white); margin-bottom: 5px;">Biblioteca de Combos</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem;">Guia completo de combos clássicos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="card" style="text-align: center;">
+                <h3><i class="fas fa-quote-left" style="color: var(--fedora-accent); margin-right: 10px;"></i>Última Palavra</h3>
+                <p style="color: var(--text-gray); font-size: 1.1rem; margin-top: 15px; line-height: 1.7;">
+                    A Classic Fedora não é apenas uma crew de Blox Fruits. É uma filosofia de jogo, uma celebração da habilidade pura 
+                    e uma comunidade de jogadores que valorizam a tradição. Se você acredita que skill é mais importante que meta, 
+                    que combos clássicos ainda têm valor, e que o respeito deve vir acima de tudo, você pode ser um Fedora.
+                </p>
+                <div style="margin-top: 25px; display: flex; justify-content: center; gap: 20px;">
+                    <button class="btn btn-primary" onclick="switchPage('filosofia')">
+                        <i class="fas fa-book"></i> Ler Nossa Filosofia
+                    </button>
+                    <a href="https://discord.gg/J6uY4a7HEK" id="discord-link-2" target="_blank" class="btn" style="background: rgba(88, 101, 242, 0.1); color: #8B9DFF; border: 1px solid rgba(88, 101, 242, 0.3);">
+                        <i class="fab fa-discord"></i> Entrar no Discord
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Configuração
+        let voteCounts = {
+            1: 84,
+            2: 67,
+            3: 92,
+            4: 58
+        };
+        
+        let selectedOption = null;
+        let hasVoted = localStorage.getItem('classicFedoraVoted') === 'true';
+
+        // Elementos do DOM
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const voteOptions = document.querySelectorAll('.vote-option');
+        const submitVoteBtn = document.getElementById('submit-vote');
+        const discordLinks = document.querySelectorAll('[id^="discord-link"]');
+
+        // Navegação entre páginas
+        function switchPage(pageId) {
+            // Atualizar navegação
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Mostrar página selecionada
+            pages.forEach(page => {
+                page.classList.remove('active');
+                if (page.id === pageId) {
+                    page.classList.add('active');
+                    
+                    // Adicionar animações específicas para cada página
+                    animatePageElements();
+                }
+            });
+
+            // Se for a página de votação, calcular porcentagens
+            if (pageId === 'votacao') {
+                setTimeout(() => {
+                    calculatePercentages();
+                    
+                    // Verificar se já votou
+                    if (hasVoted) {
+                        submitVoteBtn.disabled = true;
+                        submitVoteBtn.textContent = 'VOCÊ JÁ VOTOU!';
+                    }
+                }, 300);
+            }
+
+            // Scroll para o topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Adicionar event listeners para navegação
+        navLinks.forEach(link => {
+            if (link.getAttribute('data-page')) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    switchPage(pageId);
+                });
+            }
+        });
+
+        // Animação dos elementos da página
+        function animatePageElements() {
+            // Animar cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.setProperty('--card-index', index);
+                card.style.animation = 'none';
+                setTimeout(() => {
+                    card.style.animation = `cardFloat 6s ease-in-out infinite`;
+                    card.style.animationDelay = `${index * 0.2}s`;
+                }, 10);
+            });
+            
+            // Animar tags
+            const tags = document.querySelectorAll('.tag');
+            tags.forEach((tag, index) => {
+                tag.style.setProperty('--tag-index', index);
+            });
+            
+            // Animar itens de lista
+            const listItems = document.querySelectorAll('.requirements-list li');
+            listItems.forEach((item, index) => {
+                item.style.setProperty('--list-index', index);
+                item.style.animation = 'none';
+                setTimeout(() => {
+                    item.style.animation = `listItemSlide 0.5s ease-out`;
+                    item.style.animationDelay = `${index * 0.1}s`;
+                    item.style.animationFillMode = 'forwards';
+                }, 10);
+            });
+            
+            // Animar barras de resultado
+            const resultBars = document.querySelectorAll('.result-bar');
+            resultBars.forEach((bar, index) => {
+                bar.style.setProperty('--bar-index', index);
+                bar.style.animation = 'none';
+                setTimeout(() => {
+                    bar.style.animation = `barSlideIn 0.8s ease-out`;
+                    bar.style.animationDelay = `${index * 0.1}s`;
+                    bar.style.animationFillMode = 'forwards';
+                }, 10);
+            });
+            
+            // Animar opções de voto
+            const voteOptionElements = document.querySelectorAll('.vote-option');
+            voteOptionElements.forEach((option, index) => {
+                option.style.setProperty('--option-index', index);
+                option.style.animation = 'none';
+                setTimeout(() => {
+                    option.style.animation = `optionFloat 8s ease-in-out infinite`;
+                    option.style.animationDelay = `${index * 0.3}s`;
+                }, 10);
+            });
+        }
+
+        // Calcular porcentagens dos votos
+        function calculatePercentages() {
+            const total = voteCounts[1] + voteCounts[2] + voteCounts[3] + voteCounts[4];
+            
+            for (let i = 1; i <= 4; i++) {
+                const percentage = Math.round((voteCounts[i] / total) * 100);
+                document.getElementById(`percent-${i}`).textContent = `${percentage}%`;
+                document.getElementById(`bar-${i}`).style.width = `${percentage}%`;
+                document.getElementById(`count-${i}`).textContent = `${voteCounts[i]} votos`;
+            }
+        }
+
+        // Selecionar opção de voto
+        voteOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                if (hasVoted) return;
+                
+                // Remover seleção anterior
+                voteOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Adicionar seleção atual
+                this.classList.add('selected');
+                
+                // Definir opção selecionada
+                selectedOption = this.getAttribute('data-option');
+                
+                // Habilitar botão de votar
+                submitVoteBtn.disabled = false;
+            });
+        });
+
+        // Enviar voto
+        submitVoteBtn.addEventListener('click', () => {
+            if (!selectedOption || hasVoted) return;
+            
+            // Efeito visual
+            submitVoteBtn.style.animation = 'none';
+            submitVoteBtn.style.transform = 'scale(0.95)';
+            
+            // Adicionar voto após pequeno delay
+            setTimeout(() => {
+                voteCounts[selectedOption]++;
+                
+                // Atualizar display
+                calculatePercentages();
+                
+                // Mostrar mensagem
+                alert(`Voto registrado! Você escolheu: ${document.querySelector(`[data-option="${selectedOption}"] h4`).textContent}`);
+                
+                // Desabilitar votação
+                submitVoteBtn.disabled = true;
+                submitVoteBtn.textContent = 'VOTO COMPUTADO!';
+                hasVoted = true;
+                
+                // Remover seleção visual
+                voteOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedOption = null;
+                
+                // Salvar no localStorage
+                localStorage.setItem('classicFedoraVoted', 'true');
+                localStorage.setItem('classicFedoraVoteTime', new Date().getTime());
+                localStorage.setItem('classicFedoraVoteCounts', JSON.stringify(voteCounts));
+                
+                // Restaurar botão
+                setTimeout(() => {
+                    submitVoteBtn.style.transform = 'scale(1)';
+                }, 300);
+            }, 300);
+        });
+
+        // Carregar votos do localStorage
+        function loadVotesFromStorage() {
+            const savedVotes = localStorage.getItem('classicFedoraVoteCounts');
+            if (savedVotes) {
+                voteCounts = JSON.parse(savedVotes);
+            }
+            
+            const voted = localStorage.getItem('classicFedoraVoted');
+            if (voted === 'true') {
+                hasVoted = true;
+                if (submitVoteBtn) {
+                    submitVoteBtn.disabled = true;
+                    submitVoteBtn.textContent = 'VOCÊ JÁ VOTOU!';
+                }
+            }
+        }
+
+        // Verificar links do Discord
+        discordLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Confirmar antes de abrir o Discord
+                const confirmLeave = confirm("Você será redirecionado para o Discord. Deseja continuar?");
+                if (!confirmLeave) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Criar partículas de fundo
+        function createParticles() {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.id = 'particles-container';
+            particlesContainer.style.position = 'fixed';
+            particlesContainer.style.top = '0';
+            particlesContainer.style.left = '0';
+            particlesContainer.style.width = '100%';
+            particlesContainer.style.height = '100%';
+            particlesContainer.style.pointerEvents = 'none';
+            particlesContainer.style.zIndex = '-1';
+            document.body.appendChild(particlesContainer);
+            
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 40 + 10;
+                const opacity = Math.random() * 0.04 + 0.01;
+                const color = Math.random() > 0.5 ? '139, 69, 19' : '34, 139, 34';
+                const delay = Math.random() * 20;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = `rgba(${color}, ${opacity})`;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadVotesFromStorage();
+            calculatePercentages();
+            createParticles();
+            animatePageElements();
+            
+            // Adicionar efeito de digitação no título da página inicial
+            const heroTitle = document.querySelector('.hero h1');
+            if (heroTitle) {
+                const originalText = heroTitle.textContent;
+                heroTitle.textContent = '';
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < originalText.length) {
+                        heroTitle.textContent += originalText.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 100);
+                    }
+                };
+                setTimeout(typeWriter, 500);
+            }
+            
+            // Animar elementos com atraso
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.card, .vote-option, .btn, .tag');
+                animatedElements.forEach(el => {
+                    el.style.opacity = '1';
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>
